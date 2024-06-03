@@ -1,0 +1,7 @@
+BasedOnStyle: google
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveAssignments: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+ColumnLimit: 120
+PointerAlignment: Left
