@@ -477,34 +477,45 @@ tp_neon_fmul:
     b.ne       1b
     ret
 
+/* 16 independent instructions because NEON fmla's Zda operand is both a source and destination register */
 tp_neon_fmla:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
     ldr        q18,    [x1]
     ldr        q19,    [x1]
     ldr        q20,    [x1]
-    ldr        q21,    [x1] 
+    ldr        q21,    [x1]
+    ldr        q22,    [x1]
+    ldr        q23,    [x1]
+    ldr        q24,    [x1]
+    ldr        q25,    [x1]
+    ldr        q26,    [x1]
+    ldr        q27,    [x1]
+    ldr        q28,    [x1]
+    ldr        q29,    [x1]
+    ldr        q30,    [x1]
+    ldr        q31,    [x1]
 1:  subs       x0,     x0,     #20
     fmla       v16.4s, v17.4s, v18.4s
     fmla       v19.4s, v17.4s, v18.4s
     fmla       v20.4s, v17.4s, v18.4s
     fmla       v21.4s, v17.4s, v18.4s
+    fmla       v22.4s, v17.4s, v18.4s
+    fmla       v23.4s, v17.4s, v18.4s
+    fmla       v24.4s, v17.4s, v18.4s
+    fmla       v25.4s, v17.4s, v18.4s
+    fmla       v26.4s, v17.4s, v18.4s
+    fmla       v27.4s, v17.4s, v18.4s
+    fmla       v28.4s, v17.4s, v18.4s
+    fmla       v29.4s, v17.4s, v18.4s
+    fmla       v30.4s, v17.4s, v18.4s
+    fmla       v31.4s, v17.4s, v18.4s
     fmla       v16.4s, v17.4s, v18.4s
     fmla       v19.4s, v17.4s, v18.4s
     fmla       v20.4s, v17.4s, v18.4s
     fmla       v21.4s, v17.4s, v18.4s
-    fmla       v16.4s, v17.4s, v18.4s
-    fmla       v19.4s, v17.4s, v18.4s
-    fmla       v20.4s, v17.4s, v18.4s
-    fmla       v21.4s, v17.4s, v18.4s
-    fmla       v16.4s, v17.4s, v18.4s
-    fmla       v19.4s, v17.4s, v18.4s
-    fmla       v20.4s, v17.4s, v18.4s
-    fmla       v21.4s, v17.4s, v18.4s
-    fmla       v16.4s, v17.4s, v18.4s
-    fmla       v19.4s, v17.4s, v18.4s
-    fmla       v20.4s, v17.4s, v18.4s
-    fmla       v21.4s, v17.4s, v18.4s
+    fmla       v22.4s, v17.4s, v18.4s
+    fmla       v23.4s, v17.4s, v18.4s
     b.ne       1b
     ret
 
@@ -606,6 +617,7 @@ tp_sve_fmul:
     b.ne       1b
     ret
 
+/* 16 independent instructions because SVE fmla's Zda operand is both a source and destination register */
 tp_sve_fmla:
     ptrue      p0.s
     ld1w       z16.s, p0/z, [x1]
@@ -614,27 +626,37 @@ tp_sve_fmla:
     ld1w       z19.s, p0/z, [x1]
     ld1w       z20.s, p0/z, [x1]
     ld1w       z21.s, p0/z, [x1]
+    ld1w       z22.s, p0/z, [x1]
+    ld1w       z23.s, p0/z, [x1]
+    ld1w       z24.s, p0/z, [x1]
+    ld1w       z25.s, p0/z, [x1]
+    ld1w       z26.s, p0/z, [x1]
+    ld1w       z27.s, p0/z, [x1]
+    ld1w       z28.s, p0/z, [x1]
+    ld1w       z29.s, p0/z, [x1]
+    ld1w       z30.s, p0/z, [x1]
+    ld1w       z31.s, p0/z, [x1]
 1:  subs       x0,    x0,   #20
     fmla       z16.s, p0/m, z17.s, z18.s
     fmla       z19.s, p0/m, z17.s, z18.s
     fmla       z20.s, p0/m, z17.s, z18.s
     fmla       z21.s, p0/m, z17.s, z18.s
+    fmla       z22.s, p0/m, z17.s, z18.s
+    fmla       z23.s, p0/m, z17.s, z18.s
+    fmla       z24.s, p0/m, z17.s, z18.s
+    fmla       z25.s, p0/m, z17.s, z18.s
+    fmla       z26.s, p0/m, z17.s, z18.s
+    fmla       z27.s, p0/m, z17.s, z18.s
+    fmla       z28.s, p0/m, z17.s, z18.s
+    fmla       z29.s, p0/m, z17.s, z18.s
+    fmla       z30.s, p0/m, z17.s, z18.s
+    fmla       z31.s, p0/m, z17.s, z18.s
     fmla       z16.s, p0/m, z17.s, z18.s
     fmla       z19.s, p0/m, z17.s, z18.s
     fmla       z20.s, p0/m, z17.s, z18.s
     fmla       z21.s, p0/m, z17.s, z18.s
-    fmla       z16.s, p0/m, z17.s, z18.s
-    fmla       z19.s, p0/m, z17.s, z18.s
-    fmla       z20.s, p0/m, z17.s, z18.s
-    fmla       z21.s, p0/m, z17.s, z18.s
-    fmla       z16.s, p0/m, z17.s, z18.s
-    fmla       z19.s, p0/m, z17.s, z18.s
-    fmla       z20.s, p0/m, z17.s, z18.s
-    fmla       z21.s, p0/m, z17.s, z18.s
-    fmla       z16.s, p0/m, z17.s, z18.s
-    fmla       z19.s, p0/m, z17.s, z18.s
-    fmla       z20.s, p0/m, z17.s, z18.s
-    fmla       z21.s, p0/m, z17.s, z18.s
+    fmla       z22.s, p0/m, z17.s, z18.s
+    fmla       z23.s, p0/m, z17.s, z18.s
     b.ne       1b
     ret
 
