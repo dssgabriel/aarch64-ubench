@@ -2,6 +2,32 @@
 
 .global clktest
 
+.global lat_scalar_fadd
+.global lat_scalar_fmul
+.global lat_scalar_fmadd
+.global lat_neon_fadd
+.global lat_neon_fmul
+.global lat_neon_fmla
+#ifdef __ARM_FEATURE_SVE
+.global lat_sve_fadd
+.global lat_sve_fmul
+.global lat_sve_fmla
+#endif
+
+.global tp_scalar_fadd
+.global tp_scalar_fmul
+.global tp_scalar_fmadd
+.global tp_neon_fadd
+.global tp_neon_fmul
+.global tp_neon_fmla
+.global tp_neon_mix_faddfmul
+#ifdef __ARM_FEATURE_SVE
+.global tp_sve_fadd
+.global tp_sve_fmul
+.global tp_sve_fmla
+.global tp_sve_mix_faddfmul
+#endif
+
 clktest:
     sub        sp,  sp,  #0x30
     stp        x14, x15, [sp, #0x10]
@@ -35,7 +61,6 @@ clktest:
     add        sp,  sp,  #0x30
     ret
 
-.global lat_scalar_fadd
 lat_scalar_fadd:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
@@ -64,7 +89,6 @@ lat_scalar_fadd:
     b.ne       1b
     ret
 
-.global lat_scalar_fmul
 lat_scalar_fmul:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
@@ -93,7 +117,6 @@ lat_scalar_fmul:
     b.ne       1b
     ret
 
-.global lat_scalar_fmadd
 lat_scalar_fmadd:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
@@ -123,7 +146,6 @@ lat_scalar_fmadd:
     b.ne       1b
     ret
 
-.global lat_neon_fadd
 lat_neon_fadd:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
@@ -152,7 +174,6 @@ lat_neon_fadd:
     b.ne       1b
     ret
 
-.global lat_neon_fmul
 lat_neon_fmul:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
@@ -211,7 +232,6 @@ lat_neon_fmla:
     ret
 
 #ifdef __ARM_FEATURE_SVE
-.global lat_sve_fadd
 lat_sve_fadd:
     ptrue      p0.s
     ld1w       z16.s, p0/z,  [x1]
@@ -241,7 +261,6 @@ lat_sve_fadd:
     b.ne       1b
     ret
 
-.global lat_sve_fmul
 lat_sve_fmul:
     ptrue      p0.s
     ld1w       z16.s, p0/z,  [x1]
@@ -302,8 +321,7 @@ lat_sve_fmla:
     ret
 #endif
 
-.global thp_scalar_fadd
-thp_scalar_fadd:
+tp_scalar_fadd:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
     ldr        s18, [x1, #0x8]
@@ -334,8 +352,7 @@ thp_scalar_fadd:
     b.ne       1b
     ret
 
-.global thp_scalar_fmul
-thp_scalar_fmul:
+tp_scalar_fmul:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
     ldr        s18, [x1, #0x8]
@@ -366,8 +383,7 @@ thp_scalar_fmul:
     b.ne       1b
     ret
 
-.global thp_scalar_fmadd
-thp_scalar_fmadd:
+tp_scalar_fmadd:
     ldr        s16, [x1]
     ldr        s17, [x1, #0x4]
     ldr        s18, [x1, #0x8]
@@ -399,8 +415,7 @@ thp_scalar_fmadd:
     b.ne       1b
     ret
 
-.global thp_neon_fadd
-thp_neon_fadd:
+tp_neon_fadd:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
     ldr        q18,    [x1]
@@ -431,8 +446,7 @@ thp_neon_fadd:
     b.ne       1b
     ret
 
-.global thp_neon_fmul
-thp_neon_fmul:
+tp_neon_fmul:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
     ldr        q18,    [x1]
@@ -463,8 +477,7 @@ thp_neon_fmul:
     b.ne       1b
     ret
 
-.global thp_neon_fmla
-thp_neon_fmla:
+tp_neon_fmla:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
     ldr        q18,    [x1]
@@ -495,8 +508,7 @@ thp_neon_fmla:
     b.ne       1b
     ret
 
-.global mix_thp_neon_faddfmul
-mix_thp_neon_faddfmul:
+tp_neon_mix_faddfmul:
     ldr        q16,    [x1]
     ldr        q17,    [x1]
     ldr        q18,    [x1]
@@ -530,8 +542,7 @@ mix_thp_neon_faddfmul:
     ret 
 
 #ifdef __ARM_FEATURE_SVE
-.global thp_sve_fadd
-thp_sve_fadd:
+tp_sve_fadd:
     ptrue      p0.s
     ld1w       z16.s, p0/z,  [x1]
     ld1w       z17.s, p0/z,  [x1]
@@ -563,8 +574,7 @@ thp_sve_fadd:
     b.ne       1b
     ret
 
-.global thp_sve_fmul
-thp_sve_fmul:
+tp_sve_fmul:
     ptrue      p0.s
     ld1w       z16.s, p0/z,  [x1]
     ld1w       z17.s, p0/z,  [x1]
@@ -596,8 +606,7 @@ thp_sve_fmul:
     b.ne       1b
     ret
 
-.global thp_sve_fmla
-thp_sve_fmla:
+tp_sve_fmla:
     ptrue      p0.s
     ld1w       z16.s, p0/z, [x1]
     ld1w       z17.s, p0/z, [x1]
@@ -629,8 +638,7 @@ thp_sve_fmla:
     b.ne       1b
     ret
 
-.global mix_thp_sve_faddfmul
-mix_thp_sve_faddfmul:
+tp_sve_mix_faddfmul:
     ptrue      p0.s
     ld1w       z16.s, p0/z,  [x1]
     ld1w       z17.s, p0/z,  [x1]

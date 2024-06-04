@@ -21,18 +21,18 @@ extern "C" uint64_t lat_sve_fmul(uint64_t iterations, float arr[64]);
 extern "C" uint64_t lat_sve_fmla(uint64_t iterations, float arr[64]);
 #endif
 
-extern "C" uint64_t thp_scalar_fadd(uint64_t iterations, float arr[4]);
-extern "C" uint64_t thp_scalar_fmul(uint64_t iterations, float arr[4]);
-extern "C" uint64_t thp_scalar_fmadd(uint64_t iterations, float arr[4]);
-extern "C" uint64_t thp_neon_fadd(uint64_t iterations, float arr[4]);
-extern "C" uint64_t thp_neon_fmul(uint64_t iterations, float arr[4]);
-extern "C" uint64_t thp_neon_fmla(uint64_t iterations, float arr[4]);
-extern "C" uint64_t mix_thp_neon_faddfmul(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_scalar_fadd(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_scalar_fmul(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_scalar_fmadd(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_neon_fadd(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_neon_fmul(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_neon_fmla(uint64_t iterations, float arr[4]);
+extern "C" uint64_t tp_neon_mix_faddfmul(uint64_t iterations, float arr[4]);
 #ifdef __ARM_FEATURE_SVE
-extern "C" uint64_t thp_sve_fadd(uint64_t iterations, float arr[64]);
-extern "C" uint64_t thp_sve_fmul(uint64_t iterations, float arr[64]);
-extern "C" uint64_t thp_sve_fmla(uint64_t iterations, float arr[64]);
-extern "C" uint64_t mix_thp_sve_faddfmul(uint64_t iterations, float arr[64]);
+extern "C" uint64_t tp_sve_fadd(uint64_t iterations, float arr[64]);
+extern "C" uint64_t tp_sve_fmul(uint64_t iterations, float arr[64]);
+extern "C" uint64_t tp_sve_fmla(uint64_t iterations, float arr[64]);
+extern "C" uint64_t tp_sve_mix_faddfmul(uint64_t iterations, float arr[64]);
 #endif
 
 static float fp_test_array[4] __attribute__((aligned(64))) = {0.2, 1.5, 2.7, 3.14};
@@ -106,12 +106,12 @@ namespace throughput {
 template <InstKind Kind>
 auto fadd(uint64_t iterations) -> uint64_t {
   if constexpr (Kind == Scalar) {
-    return thp_scalar_fadd(iterations, fp_test_array);
+    return tp_scalar_fadd(iterations, fp_test_array);
   } else if constexpr (Kind == Neon) {
-    return thp_neon_fadd(iterations, fp_test_array);
+    return tp_neon_fadd(iterations, fp_test_array);
   } else if constexpr (Kind == Sve) {
 #ifdef __ARM_FEATURE_SVE
-    return thp_sve_fadd(iterations, sve_test_array);
+    return tp_sve_fadd(iterations, sve_test_array);
 #else
 #error "CPU does not support Arm SVE"
 #endif
@@ -123,12 +123,12 @@ auto fadd(uint64_t iterations) -> uint64_t {
 template <InstKind Kind>
 auto fmul(uint64_t iterations) -> uint64_t {
   if constexpr (Kind == Scalar) {
-    return thp_scalar_fmul(iterations, fp_test_array);
+    return tp_scalar_fmul(iterations, fp_test_array);
   } else if constexpr (Kind == Neon) {
-    return thp_neon_fmul(iterations, fp_test_array);
+    return tp_neon_fmul(iterations, fp_test_array);
   } else if constexpr (Kind == Sve) {
 #ifdef __ARM_FEATURE_SVE
-    return thp_sve_fmul(iterations, sve_test_array);
+    return tp_sve_fmul(iterations, sve_test_array);
 #else
 #error "CPU does not support Arm SVE"
 #endif
@@ -140,12 +140,12 @@ auto fmul(uint64_t iterations) -> uint64_t {
 template <InstKind Kind>
 auto fmadd(uint64_t iterations) -> uint64_t {
   if constexpr (Kind == Scalar) {
-    return thp_scalar_fmadd(iterations, fp_test_array);
+    return tp_scalar_fmadd(iterations, fp_test_array);
   } else if constexpr (Kind == Neon) {
-    return thp_neon_fmla(iterations, fp_test_array);
+    return tp_neon_fmla(iterations, fp_test_array);
   } else if constexpr (Kind == Sve) {
 #ifdef __ARM_FEATURE_SVE
-    return thp_sve_fmla(iterations, sve_test_array);
+    return tp_sve_fmla(iterations, sve_test_array);
 #else
 #error "CPU does not support Arm SVE"
 #endif
@@ -159,10 +159,10 @@ auto mix_faddfmul(uint64_t iterations) -> uint64_t {
   if constexpr (Kind == Scalar) {
     return 0;
   } else if constexpr (Kind == Neon) {
-    return mix_thp_neon_faddfmul(iterations, fp_test_array);
+    return tp_neon_mix_faddfmul(iterations, fp_test_array);
   } else if constexpr (Kind == Sve) {
 #ifdef __ARM_FEATURE_SVE
-    return mix_thp_sve_faddfmul(iterations, sve_test_array);
+    return tp_sve_mix_faddfmul(iterations, sve_test_array);
 #else
 #error "CPU does not support Arm SVE"
 #endif
