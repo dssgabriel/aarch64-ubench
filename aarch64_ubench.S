@@ -2,41 +2,38 @@
 
 .global clktest
 
-/* x0 = arg = iteration count. all iteration counts must be divisible by 10 */
 clktest:
-  sub sp, sp, #0x30
-  stp x14, x15, [sp, #0x10]
-  stp x12, x13, [sp, #0x20]
-  mov x15, 1
-  mov x14, 20
-  eor x13, x13, x13
-clktest_loop:
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  add x13, x13, x15
-  sub x0, x0, x14
-  cbnz x0, clktest_loop
-  ldp x12, x13, [sp, #0x20]
-  ldp x14, x15, [sp, #0x10]
-  add sp, sp, #0x30
-  ret
+    sub        sp,  sp,  #0x30
+    stp        x14, x15, [sp, #0x10]
+    stp        x12, x13, [sp, #0x20]
+    mov        x15, #1
+    eor        x13, x13, x13
+1:  subs       x0,  x0,  #20
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    add        x13, x13, x15
+    b.ne       1b
+    ldp        x12, x13, [sp, #0x20]
+    ldp        x14, x15, [sp, #0x10]
+    add        sp,  sp,  #0x30
+    ret
 
 .global lat_scalar_fadd
 lat_scalar_fadd:
